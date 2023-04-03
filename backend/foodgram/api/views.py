@@ -1,14 +1,27 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
-from recipes import models as md
-from api.serializers import TagsSerializer, IngredientsSerializer
-
-
-class TagsViewSet(viewsets.ModelViewSet):
-    queryset = md.Tags.objects.all()
-    serializer_class = TagsSerializer
+from recipes import models
+from api import  serializers
 
 
-class IngredientsViewSet(viewsets.ModelViewSet):
-    queryset = md.Ingredients.objects.all()
-    serializer_class = IngredientsSerializer
+class GetViewsets(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    pass
+
+
+class TagsViewSet(GetViewsets):
+    queryset = models.Tags.objects.all()
+    serializer_class = serializers.TagsSerializer
+
+
+class IngredientsViewSet(GetViewsets):
+    queryset = models.Ingredients.objects.all()
+    serializer_class = serializers.IngredientsSerializer
+
+
+class RecipeViewSet(viewsets.ModelViewSet):
+    queryset = models.Recipes.objects.all()
+    serializer_class = serializers.RecipesSerializer

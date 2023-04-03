@@ -4,7 +4,23 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-# Create your models here.
+class Unit(models.Model):
+    name = models.CharField(
+        max_length=10,
+        verbose_name=('Название'),
+        unique=True,
+        db_index=True,
+    )
+
+    class Meta:
+        verbose_name = ('Единицу измерения')
+        verbose_name_plural = ('Единицы измерения')
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
 class Tags(models.Model):
     name = models.CharField(
         max_length=200,
@@ -24,6 +40,11 @@ class Tags(models.Model):
         verbose_name='Слаг',
     )
 
+    class Meta:
+        verbose_name = ('Тэг')
+        verbose_name_plural = ('Тэги')
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
@@ -35,12 +56,18 @@ class Ingredients(models.Model):
         blank=False,
         verbose_name='Название',
     )
-    measurement_unit = models.CharField(
-        max_length=10,
-        unique=True,
-        blank=False,
-        verbose_name='Единица измерения',
+    measurement_unit = models.ForeignKey(
+        Unit,
+        related_name='ingredients',
+        verbose_name=('Единицы измерения'),
+        on_delete=models.SET_NULL,
+        null=True,
     )
+
+    class Meta:
+        verbose_name = ('Ингредиент')
+        verbose_name_plural = ('Ингредиенты')
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -78,6 +105,14 @@ class Recipes(models.Model):
     )
     cooking_time = models.IntegerField()
 
+    class Meta:
+        verbose_name = ('Рецепт')
+        verbose_name_plural = ('Рецепты')
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
 
 class TagsRecipe(models.Model):
     tag = models.ForeignKey(
@@ -89,14 +124,23 @@ class TagsRecipe(models.Model):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = ('Тэг для рецепта')
+        verbose_name_plural = ('Теги для рецептов')
+        ordering = ('recipe',)
+
 
 class IngredientsRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredients,
         on_delete=models.CASCADE,
     )
-    volume = models.FloatField()
     recipe = models.ForeignKey(
         Recipes,
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = ('Ингредиент для рецепта')
+        verbose_name_plural = ('Ингредиенты для рецептов')
+        ordering = ('recipe',)
