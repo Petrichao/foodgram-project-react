@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins
 
 from recipes import models
-from api import  serializers
+from api import serializers
 
 
 class GetViewsets(

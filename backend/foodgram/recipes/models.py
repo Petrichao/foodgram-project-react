@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -74,8 +75,6 @@ class Ingredients(models.Model):
 
 
 class Recipes(models.Model):
-    is_favorited = models.BooleanField(default=False)
-    is_in_shopping_cart = models.BooleanField(default=False)
     name = models.CharField(
         max_length=200,
         blank=False,
@@ -89,7 +88,7 @@ class Recipes(models.Model):
         through='TagsRecipe',
     )
     ingredients = models.ManyToManyField(
-        Ingredients,
+        'IngredientsAmount',
         through='IngredientsRecipe',
     )
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -130,9 +129,26 @@ class TagsRecipe(models.Model):
         ordering = ('recipe',)
 
 
-class IngredientsRecipe(models.Model):
+class IngredientsAmount(models.Model):
     ingredient = models.ForeignKey(
         Ingredients,
+        on_delete=models.CASCADE,
+    )
+    amount = models.FloatField()
+
+    def __str__(self):
+        obj = self.ingredient
+        return obj.name
+
+    class Meta:
+        verbose_name = ('Кол-во ингредиета для рецепта')
+        verbose_name_plural = ('Кол-во ингредиетов для рецептов')
+        ordering = ('ingredient',)
+
+
+class IngredientsRecipe(models.Model):
+    ingredient_amount = models.ForeignKey(
+        IngredientsAmount,
         on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(
@@ -144,3 +160,21 @@ class IngredientsRecipe(models.Model):
         verbose_name = ('Ингредиент для рецепта')
         verbose_name_plural = ('Ингредиенты для рецептов')
         ordering = ('recipe',)
+
+
+class RecipeFavorited(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='user_fav',
+    )
+    recipe = models.ForeignKey(
+        Recipes,
+        on_delete=models.CASCADE,
+        related_name='recipe_fav'
+    )
+
+    class Meta:
+        verbose_name = ('Избранный рецепт пользователя')
+        verbose_name_plural = ('Избраннык рецепты пользователей')
+        ordering = ('user',)
