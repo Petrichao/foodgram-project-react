@@ -94,7 +94,10 @@ class RecipesSerializer(serializers.ModelSerializer):
 
 
 class RecipesPostSerializer(serializers.ModelSerializer):
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=r_models.Tags.objects.all())
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=r_models.Tags.objects.all()
+    )
     ingredients = IngredientsPostSerializer(many=True)
     image = Base64ImageField()
 
@@ -110,7 +113,10 @@ class RecipesPostSerializer(serializers.ModelSerializer):
 
         for ingredient in ingredients:
             ingredient_id = ingredient.get('id')
-            current_ingredient = get_object_or_404(r_models.Ingredients, pk=ingredient_id)
+            current_ingredient = get_object_or_404(
+                r_models.Ingredients,
+                pk=ingredient_id
+            )
             ingam = r_models.IngredientsAmount.objects.create(
                 ingredient=current_ingredient,
                 amount=ingredient.get('amount')
