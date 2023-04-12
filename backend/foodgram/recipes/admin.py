@@ -45,11 +45,12 @@ class TagsRecipeAdmin(admin.ModelAdmin):
 class IngredientsRecipeAdmin(admin.ModelAdmin):
     list_display = (
         'pk',
-        'ingredient_amount',
         'recipe',
+        'ingredient',
+        'amount',
     )
     search_fields = (
-        'ingredient_amount',
+        'ingredient',
         'recipe',
     )
     empty_value_display = '-пусто-'
@@ -75,17 +76,6 @@ class RecipeAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-class IngredientsAmountAdmin(admin.ModelAdmin):
-    list_display = (
-        'ingredient',
-        'amount',
-    )
-    search_fields = (
-        'ingredient',
-    )
-    empty_value_display = '-пусто-'
-
-
 class RecipeFavoritedAdmin(admin.ModelAdmin):
     list_display = (
         'user',
@@ -99,11 +89,9 @@ class RecipeFavoritedAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.RecipeFavorited, RecipeFavoritedAdmin)
-admin.site.register(models.IngredientsAmount, IngredientsAmountAdmin)
 admin.site.register(models.Unit, UnitAdmin)
 admin.site.register(models.TagsRecipe, TagsRecipeAdmin)
 admin.site.register(models.IngredientsRecipe, IngredientsRecipeAdmin)
 admin.site.register(models.Recipes, RecipeAdmin)
 admin.site.register(models.Ingredients, IngredientsAdmin)
 admin.site.register(models.Tags, TagsAdmin)
-
