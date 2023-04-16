@@ -1,25 +1,29 @@
+from api import views as a_views
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-
-from api import views
+from users import views as u_views
 
 app_name = 'api'
 
 router_v1 = DefaultRouter()
 router_v1.register(
     'tags',
-    views.TagsViewSet,
+    a_views.TagsViewSet,
     basename='tags'
 )
 router_v1.register(
     'ingredients',
-    views.IngredientsViewSet,
+    a_views.IngredientsViewSet,
     basename='ingredients'
 )
 router_v1.register(
     'recipes',
-    views.RecipeViewSet,
+    a_views.RecipeViewSet,
     basename='recipes',
+)
+router_v1.register(
+    'users',
+    u_views.CustomUserViewSet,
 )
 
 urlpatterns = [

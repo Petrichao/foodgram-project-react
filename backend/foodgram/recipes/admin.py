@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from recipes import models
 
 
@@ -56,12 +55,6 @@ class IngredientsRecipeAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    empty_value_display = '-пусто-'
-
-
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         'text',
@@ -89,7 +82,6 @@ class RecipeFavoritedAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.RecipeFavorited, RecipeFavoritedAdmin)
-admin.site.register(models.Unit, UnitAdmin)
 admin.site.register(models.TagsRecipe, TagsRecipeAdmin)
 admin.site.register(models.IngredientsRecipe, IngredientsRecipeAdmin)
 admin.site.register(models.Recipes, RecipeAdmin)

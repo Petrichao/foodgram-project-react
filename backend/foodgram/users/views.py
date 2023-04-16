@@ -1,20 +1,16 @@
-from django.contrib.auth import get_user_model
+from api.pagination import CustomPagination
+from api.serializers import CustomUserSerializer, SubscribeSerializer
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from api.pagination import CustomPagination
-from api.serializers import CustomUserSerializer, SubscribeSerializer
 from users import models
-
-User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
-    queryset = User.objects.all()
+    queryset = models.User.objects.all()
     serializer_class = CustomUserSerializer
     pagination_class = CustomPagination
 
@@ -26,7 +22,7 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, **kwargs):
         user = request.user
         author_id = self.kwargs.get('id')
-        author = get_object_or_404(User, id=author_id)
+        author = get_object_or_404(models.User, id=author_id)
 
         if request.method == 'POST':
             serializer = SubscribeSerializer(author,
@@ -48,7 +44,7 @@ class CustomUserViewSet(UserViewSet):
     )
     def subscriptions(self, request):
         user = request.user
-        queryset = User.objects.filter(subscribing__user=user)
+        queryset = models.User.objects.filter(subscribing__user=user)
         pages = self.paginate_queryset(queryset)
         serializer = SubscribeSerializer(pages,
                                          many=True,
