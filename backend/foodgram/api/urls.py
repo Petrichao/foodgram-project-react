@@ -1,6 +1,7 @@
-from api import views as a_views
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+
+from api import views as a_views
 from users import views as u_views
 
 app_name = 'api'

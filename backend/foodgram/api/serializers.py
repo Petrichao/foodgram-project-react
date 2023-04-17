@@ -6,9 +6,10 @@ from django.db import transaction
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from recipes import models as r_models
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
+
+from recipes import models as r_models
 from users import models as u_models
 
 User = get_user_model()

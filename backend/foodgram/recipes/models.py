@@ -33,12 +33,12 @@ class Tags(models.Model):
 class Ingredients(models.Model):
     name = models.CharField(
         max_length=200,
-        unique=True,
+        unique=False,
         blank=False,
         verbose_name='Название',
     )
     measurement_unit = models.CharField(
-        max_length=10,
+        max_length=20,
         verbose_name='Единица измерения'
     )
 
@@ -123,7 +123,7 @@ class IngredientsRecipe(models.Model):
         on_delete=models.CASCADE,
     )
     amount = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(1)]
     )
 
     class Meta:
