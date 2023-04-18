@@ -16,9 +16,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-load_dotenv('D:/Dev/foodgram-project-react/infra/.env')
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv('../.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -29,9 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'web',
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -165,6 +162,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 AUTH_USER_MODEL = 'users.User'
 STATIC_URL = '/static/'
-STATIC_ROOT = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

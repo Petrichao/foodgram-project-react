@@ -58,6 +58,7 @@ class IngredientsRecipeAdmin(admin.ModelAdmin):
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
+        'name',
         'text',
         'pub_date',
         'author',

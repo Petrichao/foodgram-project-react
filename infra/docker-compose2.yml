@@ -4,19 +4,19 @@ services:
   db:
     image: postgres:13.0-alpine
     volumes:
-      - data_value:/var/lib/postgresql/data/
+      - my-postgres:/var/lib/postgresql/data/
     env_file:
       - ./.env
 
   frontend:
-    image: petrichao/front:latest
+    image: garanin277/foodfront:v1
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
       - db
 
   backend:
-    image: petrichao/back:latest
+    image: garanin277/food:v11
     restart: always
     volumes:
       - static_value:/app/static/
@@ -27,19 +27,21 @@ services:
       - ./.env
 
   nginx:
-    image: nginx:1.21.3-alpine
+    image: nginx:1.19.3
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
       - static_value:/var/html/static/
       - media_value:/var/html/media/
       - ../frontend/build:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+      - ./docs/:/usr/share/nginx/html/api/docs/
+
     depends_on:
       - backend
-      - frontend
+
+
 volumes:
-  data_value:
+  my-postgres:
   static_value:
   media_value:

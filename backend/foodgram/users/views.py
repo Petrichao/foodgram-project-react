@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import LimitOffsetPagination
 
 from api.pagination import CustomPagination
 from api.serializers import CustomUserSerializer, SubscribeSerializer
@@ -41,11 +42,12 @@ class CustomUserViewSet(UserViewSet):
 
     @action(
         detail=False,
-        permission_classes=[IsAuthenticated]
+        permission_classes=[IsAuthenticated],
+        pagination_class=LimitOffsetPagination
     )
     def subscriptions(self, request):
         user = request.user
-        queryset = models.User.objects.filter(subscribing__user=user)
+        queryset = models.User.objects.filter(author__user=user)
         pages = self.paginate_queryset(queryset)
         serializer = SubscribeSerializer(pages,
                                          many=True,

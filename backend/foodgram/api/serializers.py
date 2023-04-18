@@ -84,8 +84,6 @@ class SubscribeSerializer(CustomUserSerializer):
     def validate(self, data):
         author = self.instance
         user = self.context.get('request').user
-        request = self.context.get('request')
-        limit = request.GET.get('recipes_limit')
         if u_models.Subscribes.objects.filter(author=author,
                                               user=user
                                               ).exists():
@@ -96,11 +94,6 @@ class SubscribeSerializer(CustomUserSerializer):
         if user == author:
             raise ValidationError(
                 detail='Вы не можете подписаться на самого себя!',
-                code=status.HTTP_400_BAD_REQUEST
-            )
-        if not limit.is_integer():
-            raise ValidationError(
-                detail='Введите целое число limit!',
                 code=status.HTTP_400_BAD_REQUEST
             )
         return data
@@ -131,14 +124,9 @@ class IngredientsRecipeSerializer(serializers.ModelSerializer):
 
 
 class IngredientsSerializer(serializers.ModelSerializer):
-    measurement_unit = serializers.SerializerMethodField()
-
     class Meta:
         fields = '__all__'
         model = r_models.Ingredients
-
-    def get_measurement_unit(self, obj):
-        return obj.measurement_unit.name
 
 
 class RecipesSerializer(serializers.ModelSerializer):
