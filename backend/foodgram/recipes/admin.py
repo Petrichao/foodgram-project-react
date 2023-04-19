@@ -83,6 +83,19 @@ class RecipeFavoritedAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+class ShoppingCartAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'recipe',
+    )
+    search_fields = (
+        'user',
+        'recipe',
+    )
+    empty_value_display = '-пусто-'
+
+
+admin.site.register(models.ShoppingCart, ShoppingCartAdmin)
 admin.site.register(models.RecipeFavorited, RecipeFavoritedAdmin)
 admin.site.register(models.TagsRecipe, TagsRecipeAdmin)
 admin.site.register(models.IngredientsRecipe, IngredientsRecipeAdmin)
