@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.pagination import LimitOffsetPagination
 
 from api import serializers
 from api.filters import IngredientFilter, RecipeFilter
@@ -46,7 +47,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = r_models.Recipes.objects.all()
     serializer_class = serializers.RecipesSerializer
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
-    pagination_class = CustomPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
