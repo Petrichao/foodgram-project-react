@@ -59,25 +59,33 @@ class Recipes(models.Model):
     name = models.CharField(
         max_length=200,
         blank=False,
+        verbose_name='Название'
     )
     text = models.TextField(
         blank=False,
+        verbose_name='Описание'
     )
     tags = models.ManyToManyField(
         Tags,
         through='TagsRecipe',
+        verbose_name='Тэги'
     )
     ingredients = models.ManyToManyField(
         'Ingredients',
         through='IngredientsRecipe',
+        verbose_name='Ингредиенты'
     )
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата подликации'
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='recipes',
         blank=False,
         null=False,
+        verbose_name='Автор'
     )
     image = models.ImageField(
         'Картинка',
@@ -85,7 +93,8 @@ class Recipes(models.Model):
         blank=True,
     )
     cooking_time = models.IntegerField(
-        validators=[MinValueValidator(1)]
+        validators=[MinValueValidator(1)],
+        verbose_name='Время приготовления'
     )
 
     class Meta:
@@ -101,10 +110,12 @@ class TagsRecipe(models.Model):
     tag = models.ForeignKey(
         Tags,
         on_delete=models.CASCADE,
+        verbose_name='Тэг'
     )
     recipe = models.ForeignKey(
         Recipes,
         on_delete=models.CASCADE,
+        verbose_name='Рецепт'
     )
 
     class Meta:
@@ -117,13 +128,16 @@ class IngredientsRecipe(models.Model):
     recipe = models.ForeignKey(
         Recipes,
         on_delete=models.CASCADE,
+        verbose_name='Рецепт'
     )
     ingredient = models.ForeignKey(
         Ingredients,
         on_delete=models.CASCADE,
+        verbose_name='Ингредиент'
     )
     amount = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1)]
+        validators=[MinValueValidator(1)],
+        verbose_name='Кол-во ингредиента'
     )
 
     class Meta:

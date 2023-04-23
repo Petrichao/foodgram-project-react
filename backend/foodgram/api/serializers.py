@@ -134,6 +134,7 @@ class RecipesSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
     author = CustomUserSerializer()
     is_favorited = serializers.SerializerMethodField()
+    is_in_shopping_cart = serializers.SerializerMethodField()
     image = Base64ImageField()
 
     class Meta:
@@ -146,6 +147,15 @@ class RecipesSerializer(serializers.ModelSerializer):
         user_id = request.user.id
         recipe_id = obj.id
         return r_models.RecipeFavorited.objects.filter(
+            user=user_id,
+            recipe=recipe_id
+        ).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        request = self.context.get('request')
+        user_id = request.user.id
+        recipe_id = obj.id
+        return r_models.ShoppingCart.objects.filter(
             user=user_id,
             recipe=recipe_id
         ).exists()
